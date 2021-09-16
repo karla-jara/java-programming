@@ -14,21 +14,17 @@ public class Hello {
 
 
     public class Challenge {
-        public static String convertTime(String time) {
-            try {
-                time = time.replace("a", "A").replace("p", "P").replace("m", "M");
-                System.out.println(time);
-                DateTimeFormatter twelve = DateTimeFormatter.ofPattern("h:mm a");
-                DateTimeFormatter twentyFour = DateTimeFormatter.ofPattern("H:mm");
-                if (time.matches(".*[AP]M")) {
-                    LocalTime pt = LocalTime.parse(time, twelve);
-                    return pt.format(twentyFour);
-                }
-                LocalTime pt = LocalTime.parse(time, twentyFour);
-                return pt.format(twelve).replace("AM", "am").replace("PM", "pm");
+        public static String convertTime(String t) {
+            int h = Integer.parseInt((t.split(":")[0]));
+            String m = (t.split(":")[1]).substring(0,2);
+            if(t.contains("pm")){
+                h=h<12?h+12:h;
+                return ""+h+":"+m;
             }
-            catch (Exception e) {
-                return time;
+            if(t.contains("am")){
+                h=h>=12?h-12:h+12;
+                return ""+h+":"+m;
             }
+            return h<12?""+h+":"+m+" am":""+(h-12)+":"+m+" pm";
         }
-}}
+    }}
